@@ -3,7 +3,6 @@ Database models for the badges app
 """
 from importlib import import_module
 
-import re
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -133,7 +132,7 @@ class BadgeAssertion(models.Model):
 
 class CourseCompleteImageConfiguration(models.Model):
     """
-    Contains the configuration for badges for a specific mode. The mode
+    Contains the icon configuration for badges for a specific course mode.
     """
     mode = models.CharField(
         max_length=125,
@@ -228,10 +227,9 @@ class CourseEventBadgesConfiguration(ConfigurationModel):
 
         And returns a dictionary with the keys as the numbers and the values as the course keys.
         """
-        specs = re.split('[\n\r]', text)
+        specs = text.splitlines()
         specs = [line.split(',') for line in specs if line.strip()]
-        specs = [(int(num.strip()), slug.strip()) for num, slug in specs]
-        return dict(specs)
+        return {int(num): slug.strip() for num, slug in specs}
 
     @property
     def completed_settings(self):
@@ -257,8 +255,7 @@ class CourseEventBadgesConfiguration(ConfigurationModel):
         specs = self.course_groups.strip()
         if not specs:
             return {}
-        specs = re.split('[\n\r]', specs)
-        specs = [line.split(',', 1) for line in specs]
+        specs = [line.split(',', 1) for line in specs.splitlines()]
         return {
             slug.strip(): [CourseKey.from_string(key.strip()) for key in keys.strip().split(',')]
             for slug, keys in specs
@@ -278,12 +275,12 @@ class CourseEventBadgesConfiguration(ConfigurationModel):
         if 'courses_enrolled' not in exclude:
             try:
                 self.enrolled_settings
-            except (ValueError, InvalidKeyError) as err:
+            except (ValueError, InvalidKeyError):
                 errors['courses_enrolled'] = [unicode(error_message)]
         if 'course_groups' not in exclude:
             try:
                 self.course_group_settings
-            except (ValueError, InvalidKeyError) as err:
+            except (ValueError, InvalidKeyError):
                 errors['course_groups'] = [unicode(error_message)]
         if errors:
             raise ValidationError(errors)
