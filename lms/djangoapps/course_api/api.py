@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework.exceptions import PermissionDenied
 
 from lms.djangoapps.courseware.courses import get_courses, get_course_with_access
+from openedx.core.lib.api import paginators
 
 from .permissions import can_view_courses_for_username
 from .serializers import CourseSerializer
@@ -68,6 +69,10 @@ def list_courses(requesting_user, target_username, request):
     Return value:
         A CourseSerializer object representing the collection of courses.
     """
+    paginator = paginators.NamespacedPageNumberPagination()
     user = get_effective_user(requesting_user, target_username)
     courses = get_courses(user)
-    return CourseSerializer(courses, context={'request': request}, many=True)
+    page = paginator.paginate_queryset(courses, request)
+    return paginator.get_paginated_response(
+        CourseSerializer(page, context={'request': request}, many=True).data
+    )
