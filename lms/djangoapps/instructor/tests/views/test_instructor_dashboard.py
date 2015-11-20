@@ -57,8 +57,8 @@ class TestInstructorDashboard(ModuleStoreTestCase, LoginEnrollmentTestCase, XssT
         )
 
         self.course_mode = CourseMode(course_id=self.course.id,
-                                      mode_slug="honor",
-                                      mode_display_name="honor cert",
+                                      mode_slug=CourseMode.AUDIT,
+                                      mode_display_name="Audit",
                                       min_price=40)
         self.course_mode.save()
         # Create instructor account

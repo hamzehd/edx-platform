@@ -1090,7 +1090,7 @@ class CourseEnrollment(models.Model):
                 )
 
     @classmethod
-    def enroll(cls, user, course_key, mode="honor", check_access=False):
+    def enroll(cls, user, course_key, mode=CourseMode.DEFAULT_MODE.slug, check_access=False):
         """
         Enroll a user in a course. This saves immediately.
 

@@ -7,6 +7,7 @@ import importlib
 import logging
 from django.conf import settings
 from django.core.cache import cache
+from course_modes.models import CourseMode
 from enrollment import errors
 
 log = logging.getLogger(__name__)
@@ -132,7 +133,7 @@ def get_enrollment(user_id, course_id):
     return _data_api().get_course_enrollment(user_id, course_id)
 
 
-def add_enrollment(user_id, course_id, mode='honor', is_active=True):
+def add_enrollment(user_id, course_id, mode=CourseMode.DEFAULT_MODE.slug, is_active=True):
     """Enrolls a user in a course.
 
     Enrolls a user in a course. If the mode is not specified, this will default to 'honor'.

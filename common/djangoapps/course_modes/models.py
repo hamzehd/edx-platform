@@ -94,8 +94,8 @@ class CourseMode(models.Model):
     NO_ID_PROFESSIONAL_MODE = "no-id-professional"
     CREDIT_MODE = "credit"
 
-    DEFAULT_MODE = Mode(HONOR, _('Honor Code Certificate'), 0, '', 'usd', None, None, None)
-    DEFAULT_MODE_SLUG = HONOR
+    DEFAULT_MODE = Mode(AUDIT, _('Audit'), 0, '', 'usd', None, None, None)
+    DEFAULT_MODE_SLUG = AUDIT
 
     # Modes that allow a student to pursue a verified certificate
     VERIFIED_MODES = [VERIFIED, PROFESSIONAL]
@@ -507,7 +507,7 @@ class CourseMode(models.Model):
             return False
 
         # Check that the default mode is available.
-        return cls.HONOR in modes_dict
+        return cls.DEFAULT_MODE.slug in modes_dict
 
     @classmethod
     def is_white_label(cls, course_id, modes_dict=None):
