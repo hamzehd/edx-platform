@@ -34,7 +34,7 @@ class OpenEndedPostTest(ModuleStoreTestCase):
         super(OpenEndedPostTest, self).setUp()
         self.user = UserFactory()
         store = modulestore()
-        course_items = import_course_from_xml(store, self.user.id, TEST_DATA_DIR, ['open_ended'])  # pylint: disable=maybe-no-member
+        course_items = import_course_from_xml(store, self.user.id, TEST_DATA_DIR, ['open_ended'])
         self.course = course_items[0]
         self.course_id = self.course.id
 
@@ -136,7 +136,7 @@ class OpenEndedStatsTest(ModuleStoreTestCase):
 
         self.user = UserFactory()
         store = modulestore()
-        course_items = import_course_from_xml(store, self.user.id, TEST_DATA_DIR, ['open_ended'])  # pylint: disable=maybe-no-member
+        course_items = import_course_from_xml(store, self.user.id, TEST_DATA_DIR, ['open_ended'])
         self.course = course_items[0]
 
         self.course_id = self.course.id

@@ -365,7 +365,7 @@ class SplitTestModule(SplitTestFields, XModule, StudioEditableModule):
         return self.descriptor.validate()
 
 
-@XBlock.needs('user_tags')  # pylint: disable=abstract-method
+@XBlock.needs('user_tags')
 @XBlock.wants('partitions')
 @XBlock.wants('user')
 class SplitTestDescriptor(SplitTestFields, SequenceDescriptor, StudioEditableDescriptor):
@@ -559,7 +559,7 @@ class SplitTestDescriptor(SplitTestFields, SequenceDescriptor, StudioEditableDes
         Returns a StudioValidation object describing the current state of the split_test_module
         (not including superclass validation messages).
         """
-        _ = self.runtime.service(self, "i18n").ugettext  # pylint: disable=redefined-outer-name
+        _ = self.runtime.service(self, "i18n").ugettext
         split_validation = StudioValidation(self.location)
         if self.user_partition_id < 0:
             split_validation.add(

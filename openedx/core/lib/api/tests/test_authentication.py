@@ -30,13 +30,13 @@ factory = APIRequestFactory()  # pylint: disable=invalid-name
 class MockView(APIView):  # pylint: disable=missing-docstring
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request):  # pylint: disable=missing-docstring,unused-argument
+    def get(self, request):  # pylint: disable=missing-docstring
         return HttpResponse({'a': 1, 'b': 2, 'c': 3})
 
-    def post(self, request):  # pylint: disable=missing-docstring,unused-argument
+    def post(self, request):  # pylint: disable=missing-docstring
         return HttpResponse({'a': 1, 'b': 2, 'c': 3})
 
-    def put(self, request):  # pylint: disable=missing-docstring,unused-argument
+    def put(self, request):  # pylint: disable=missing-docstring
         return HttpResponse({'a': 1, 'b': 2, 'c': 3})
 
 

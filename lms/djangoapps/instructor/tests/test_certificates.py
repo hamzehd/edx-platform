@@ -109,7 +109,7 @@ class CertificatesInstructorDashTest(SharedModuleStoreTestCase):
         """
         self.course.cert_html_view_enabled = True
         self.course.save()
-        self.store.update_item(self.course, self.global_staff.id)  # pylint: disable=no-member
+        self.store.update_item(self.course, self.global_staff.id)
         self.client.login(username=self.global_staff.username, password="test")
         response = self.client.get(self.url)
         self.assertContains(response, 'Enable Student-Generated Certificates')
@@ -125,7 +125,7 @@ class CertificatesInstructorDashTest(SharedModuleStoreTestCase):
         """
         self.course.cert_html_view_enabled = True
         self.course.save()
-        self.store.update_item(self.course, self.global_staff.id)  # pylint: disable=no-member
+        self.store.update_item(self.course, self.global_staff.id)
         self.client.login(username=self.global_staff.username, password="test")
         response = self.client.get(self.url)
         self.assertContains(response, 'Enable Student-Generated Certificates')
@@ -345,7 +345,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         certificate_exception = json.loads(res_json['data'])[0]
         self.assertEqual(certificate_exception['user_email'], self.user.email)
         self.assertEqual(certificate_exception['user_name'], self.user.username)
-        self.assertEqual(certificate_exception['user_id'], self.user.id)  # pylint: disable=no-member
+        self.assertEqual(certificate_exception['user_id'], self.user.id)
 
     def test_certificate_exception_invalid_username_error(self):
         """

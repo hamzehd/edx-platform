@@ -420,7 +420,7 @@ class TestInstructorDetailedEnrollmentReport(TestReportMixin, InstructorTaskCour
             result = upload_enrollment_report(None, None, self.course.id, task_input, 'generating_enrollment_report')
 
         enrollment_source = u'manually enrolled by username: {username}'.format(
-            username=self.instructor.username)  # pylint: disable=no-member
+            username=self.instructor.username)
         self.assertDictContainsSubset({'attempted': 1, 'succeeded': 1, 'failed': 0}, result)
         self._verify_cell_data_in_csv(student.username, 'Enrollment Source', enrollment_source)
         self._verify_cell_data_in_csv(
@@ -1026,14 +1026,14 @@ class TestCourseSurveyReport(TestReportMixin, InstructorTaskCourseTestCase):
         report_store = ReportStore.from_config(config_name='GRADES_DOWNLOAD')
         header_row = ",".join(['User ID', 'User Name', 'Email', self.question1, self.question2, self.question3])
         student1_row = ",".join([
-            str(self.student1.id),  # pylint: disable=no-member
+            str(self.student1.id),
             self.student1.username,
             self.student1.email,
             self.answer1,
             self.answer2
         ])
         student2_row = ",".join([
-            str(self.student2.id),  # pylint: disable=no-member
+            str(self.student2.id),
             self.student2.username,
             self.student2.email,
             self.answer3,
