@@ -2710,22 +2710,21 @@ def start_certificate_regeneration(request, course_id):
 @require_POST
 def create_bulk_certificate_exceptions(request, course_id):
     course_key = CourseKey.from_string(course_id)
-    students = row_errors = general_errors = []
+    students, warnings, errors, success = ([] for i in range(4))
     if 'students_list' in request.FILES:
             try:
                 upload_file = request.FILES.get('students_list')
                 if upload_file.name.endswith('.csv'):
                     students = [row for row in csv.reader(upload_file.read().splitlines())]
                 else:
-                    general_errors.append({
-                        'username': '', 'email': '',
+                    errors.append({
                         'response': _('Make sure that the file you upload is in CSV format with no '
                                       'extraneous characters or rows.')
                     })
 
             except Exception:
-                general_errors.append({
-                    'user': '', 'response': _('Could not read uploaded file.')
+                errors.append({
+                    'response': _('Could not read uploaded file.')
                 })
             finally:
                 upload_file.close()
@@ -2736,27 +2735,37 @@ def create_bulk_certificate_exceptions(request, course_id):
                 # verify that we have exactly one column in every row either email or username but allow for blank lines
                 if len(student) != 1:
                     if len(student) > 0:
-                        general_errors.append({
-                            'user': '',
-                            'response': _('Data in row #{row_num} must have exactly one column: email or username')
-                                .format(row_num=row_num)
+                        errors.append({
+                            'response': _('Data in row #{num} must have exactly one column, '
+                                          'either an email or a username').format(num=row_num)
                         })
                     continue
                 user = student[0]
                 try:
                     db_user = get_user_by_username_or_email(user)
                 except ObjectDoesNotExist:
-                    row_errors.append({
-                        'user': user, 'response': _('Student (username/email={user}) does not exist').format(user=user)
+                    errors.append({'response': _('Student (username/email={user}) does not exist').format(user=user)})
+                if CertificateWhitelist.objects.filter(user=db_user, course_id=course_key, whitelist=True).count() > 0:
+                    warnings.append({
+                        'response': _("Student {username} in row {row} already in certificate exception "
+                                      "list").format(username=db_user.username, row=row_num)
                     })
+                    continue
+
+                CertificateWhitelist.objects.create(
+                    user=db_user,
+                    course_id=course_key,
+                    whitelist=True
+                )
     else:
-        general_errors.append({
-            'user': '', 'response': _('File is not attached.')
+        errors.append({
+            'response': _('File is not attached.')
         })
 
     results = {
-        'row_errors': row_errors,
-        'general_errors': general_errors
+        'errors': errors,
+        'warnings': warnings,
+        'success': [] if len(errors + warnings) > 0 else success.append({'response': _("Success. Now choose from the selections below and click Generate Exception Certificates.")})
     }
 
     return JsonResponse(results)

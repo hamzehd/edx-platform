@@ -33,11 +33,7 @@
 
                 render: function(){
                     var template = this.loadTemplate('certificate-bulk-white-list');
-                    this.$el.html(template(
-                        {
-                            bulk_exception_url: this.bulk_exception_url
-                        }
-                    ));
+                    this.$el.html(template());
                 },
 
                 loadTemplate: function(name) {
@@ -48,22 +44,58 @@
 
                 uploadCSV: function(event) {
                     var form = this.$el.find(DOM_SELECTORS.bulk_white_list_exception_form);
+                    var self = this;
                     form.submit(function(event) {
                         event.preventDefault();
                         var data = new FormData(event.currentTarget);
                         data['csrfmiddlewaretoken'] = '{{ csrf_token }}';
                           $.ajax({
                             dataType: 'json',
-                            type: form.attr('method'),
-                            url: form.attr('action'),
+                            type: 'POST',
+                            url: self.bulk_exception_url,
                             data: data,
                             processData: false,
                             contentType: false,
-                            success: function(data) {
-
+                            success: function(data_from_server) {
+                                self.display_response(data_from_server);
                             }
                           });
                     });
+                },
+
+                display_response: function(data_from_server) {
+                    $(".results").empty();
+
+                    // Display error messages
+                    if (data_from_server.errors.length) {
+                        var errors = data_from_server.errors;
+                        for(var i = 0; i < errors.length; i++){
+                            $(".results").append(generate_div('error', errors[i].response))
+                        }
+                    }
+
+                    // Display warning messages
+                    if (data_from_server.warnings.length) {
+                        var warnings = data_from_server.warnings;
+                        for(var i = 0; i < warnings.length; i++){
+                            $(".results").append(generate_div('warning', warnings[i].response))
+                        }
+                    }
+
+                    // Display a success message
+                    if (data_from_server.success.length) {
+                        var success = data_from_server.success;
+                        for(var i = 0; i < success.length; i++){
+                            $(".results").append(generate_div('success', success[i].response))
+                        }
+                    }
+
+                    function generate_div(message_type, message) {
+                        return $('<div/>', {
+                            class: 'message message-' + message_type,
+                            text: message
+                        });
+                    }
                 },
 
                 chooseFile: function(event) {
