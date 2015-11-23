@@ -15,6 +15,7 @@ from watchdog.events import PatternMatchingEventHandler
 
 from .utils.envs import Env
 from .utils.cmd import cmd, django_cmd
+from lms.envs.common import COMP_THEME_DIR
 
 # setup baseline paths
 
@@ -36,7 +37,7 @@ def configure_paths():
     edxapp_env = Env()
     # if edxapp_env.feature_flags.get('USE_CUSTOM_THEME', False):
     theme_name = 'default'
-    parent_dir = "home" / "darwish" / "edx-theming" / "edx-platform "
+    parent_dir = path(COMP_THEME_DIR).abspath().parent
     theme_root = parent_dir / "themes" / theme_name
     COFFEE_DIRS.append(theme_root)
     sass_dir = theme_root / "static" / "sass"
@@ -46,13 +47,14 @@ def configure_paths():
         SASS_DIRS.append(sass_dir)
 
     # if edxapp_env.env_tokens.get("COMP_THEME_DIR", ""):
-    lms_sass = theme_root / "static" / "sass"
-    lms_css = theme_root / "static" / "css"
+    theme_dir = path(COMP_THEME_DIR)
+    lms_sass = theme_dir / "static" / "sass"
+    lms_css = theme_dir / "static" / "css"
     if lms_sass.isdir():
         lms_css.mkdir_p()
         SASS_DIRS.append(lms_sass)
-    studio_sass = theme_root / "studio" / "static" / "sass"
-    studio_css = theme_root / "studio" / "static" / "css"
+    studio_sass = theme_dir / "studio" / "static" / "sass"
+    studio_css = theme_dir / "studio" / "static" / "css"
     if studio_sass.isdir():
         studio_css.mkdir_p()
         SASS_DIRS.append(studio_sass)
