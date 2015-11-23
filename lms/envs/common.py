@@ -429,7 +429,7 @@ COURSES_ROOT = ENV_ROOT / "data"
 DATA_DIR = COURSES_ROOT
 
 # comprehensive theming system
-COMP_THEME_DIR = ""
+COMP_THEME_DIR = "/home/darwish/devstack/edx-platform/themes/default/"
 
 # TODO: Remove the rest of the sys.path modification here and in cms/envs/common.py
 sys.path.append(REPO_ROOT)
@@ -2733,3 +2733,5 @@ PROCTORING_SETTINGS = {}
 # The reason we introcuced this number is because we do not want the CCX
 # to compete with the MOOC.
 CCX_MAX_STUDENTS_ALLOWED = 200
+
+THEME_NAME = "default"
