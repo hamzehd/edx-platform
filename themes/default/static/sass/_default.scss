@@ -10,20 +10,20 @@
 //-----------------
 
 //Main Color Variables
-$main-color: #f7691f;
-$dark-color: #ea281f; //Link Color
-$light-color: #f4e00c; //Selected Header BG Color, ie. calendar        ***Custom, not from palette***
+$main-color: #008000;
+$dark-color: #00b300; //Link Color
+$light-color: #008000; //Selected Header BG Color, ie. calendar        ***Custom, not from palette***
 $bg-color: #f7fe81; //Selected Content BG Color, ie. calendar          ***Custom, not from palette***
 
 //Main BG Color Variables
-$main-bg: #822537;
+$main-bg: #00b300;
 $main-bg-60: lighten($main-bg, 18.5%); //Main Border/HR Color
-$main-bg-25: lighten($main-bg, 25%); 
+$main-bg-25: lighten($main-bg, 25%);
 
 //Secondary Color Variables
 $secondary: #b5a4b7;
 $secondary-50: lighten($secondary, 9%);
-$secondary-25: lighten($secondary, 20%); //Important Heading BG Color 
+$secondary-25: lighten($secondary, 20%); //Important Heading BG Color
 
 //Gray Color Variables
 $gray: #3f3f3f; //Main Text Color
@@ -231,7 +231,7 @@ html {
 //-----------------
 .wrapper-footer {
     box-shadow: none !important;
-    
+
     footer {
         max-width: 1180px;
         margin: 0 auto;
@@ -269,4 +269,50 @@ section.tos {
     .print {
         margin: 50px 0;
     }
+}
+
+
+//-------------------------
+// Login Button in register
+//-------------------------
+a.cta-login-action:hover {
+  background-color: #090 !important;
+  color: #ffffff !important;
+}
+a.cta-login-action{
+  color: #090 !important;
+}
+
+//-----------------------------
+// Login Button in Sign In Page
+//-----------------------------
+
+.action .action-primary .action-update .login-button{
+  color: #ffffff !important;
+}
+
+//-----------------------------
+// Courses Header bottom border
+//-----------------------------
+
+.wrapper-header-courses {
+  border-bottom: 3px solid #090 !important;
+}
+
+//-------------------------------
+// Find New Course Button Borders
+//-------------------------------
+.dashboard .wrapper-find-courses {
+  border-top: 3px solid #090 !important;
+}
+
+.dashboard .profile-sidebar {
+  border-top: 3px solid #090 !important;
+}
+
+//----------------------
+// Button Find Courses
+//----------------------
+.dashboard .wrapper-find-courses .btn-find-courses:hover{
+  background-color: #090 !important;
 }
